@@ -4,11 +4,24 @@ export default {
     return {
       ws: null,
       message: '',
-      serverMessage: ''
+      serverMessage: '',
+      socket:null
     };
   },
+  created() {
+    this.socket = new WebSocket('ws://localhost:8081/ws?token=' + localStorage.getItem('token'));
+
+// 或者通过头部
+//     this.socket = new WebSocket('ws://localhost:8081/ws', {
+//       headers: {
+//         Authorization: 'Bearer ' + localStorage.getItem('token')
+//       }
+//     });
+  },
   methods: {
+
     connectWebSocket() {
+
       this.ws = new WebSocket('ws://localhost:8081/ws');
       this.ws.onmessage = (event) => {
         this.serverMessage = event.data;

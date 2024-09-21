@@ -36,6 +36,7 @@ public class NettyWebSocketServer {
                             @Override
                             protected void initChannel(SocketChannel ch) throws Exception {
                                 ChannelPipeline pipeline = ch.pipeline();
+                                pipeline.addLast(new WebSocketAuthenticationHandler());  // 添加身份验证处理器
                                 pipeline.addLast(new HttpServerCodec());
                                 pipeline.addLast(new HttpObjectAggregator(65536));
                                 pipeline.addLast(new ChunkedWriteHandler());
