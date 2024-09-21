@@ -1,13 +1,11 @@
-package com.jc.nrtcloud;
+package com.jc.nrtcloud.websocket;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class NrtCloudApplication {
-
+public class Aplication {
     public static void main(String[] args) {
-        SpringApplication.run(NrtCloudApplication.class, args);
+        SpringApplication.run(Aplication.class);
     }
-
 }

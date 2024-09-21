@@ -1,0 +1,30 @@
+├── public/                     # 静态资源目录，存放不需要 webpack 处理的文件
+│   ├── index.html              # 主 HTML 文件
+│   └── favicon.ico             # 网站图标
+├── src/                        # 核心代码目录
+│   ├── api/                    # 接口请求管理，封装 axios
+│   │   └── index.js            # 配置 axios 和 API 请求函数
+│   ├── assets/                 # 静态资源文件 (如图片、字体等)
+│   │   └── logo.png            # 示例图片
+│   ├── components/             # 可复用的 Vue 组件
+│   │   ├── Header.vue          # 头部组件
+│   │   └── Footer.vue          # 底部组件
+│   ├── router/                 # 路由管理
+│   │   └── index.js            # 路由配置文件
+│   ├── store/                  # Vuex 状态管理
+│   │   ├── index.js            # Vuex 主配置
+│   │   └── modules/            # Vuex 模块化管理
+│   │       └── auth.js         # 用户认证相关状态管理
+│   ├── views/                  # 页面组件
+│   │   ├── Home.vue            # 主页
+│   │   ├── Login.vue           # 登录页
+│   │   └── Chat.vue            # WebSocket 聊天页
+│   ├── App.vue                 # 根组件
+│   ├── main.js                 # 入口文件，加载组件、路由、Vuex 等
+│   └── plugins/                # 插件目录 (例如全局使用的插件)
+│       └── websocket.js        # WebSocket 插件
+├── tests/                      # 单元测试目录
+├── .env                        # 环境变量配置文件
+├── babel.config.js             # Babel 配置
+├── package.json                # 项目依赖和配置信息
+└── vue.config.js               # Vue CLI 配置文件
