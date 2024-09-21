@@ -5,18 +5,14 @@ export default {
       ws: null,
       message: '',
       serverMessage: '',
-      socket:null
+      socket: null
     };
   },
   created() {
-    this.socket = new WebSocket('ws://localhost:8081/ws?token=' + localStorage.getItem('token'));
-
-// 或者通过头部
-//     this.socket = new WebSocket('ws://localhost:8081/ws', {
-//       headers: {
-//         Authorization: 'Bearer ' + localStorage.getItem('token')
-//       }
-//     });
+    // 通过 URL 参数传递 Token
+    const token = localStorage.getItem('token');
+    this.ws = new WebSocket(`ws://localhost:8081/ws?token=${token}`);
+    // webSocket不支持头部传送数据
   },
   methods: {
 
