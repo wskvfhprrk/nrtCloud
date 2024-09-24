@@ -1,8 +1,0 @@
-@startuml
-'https://plantuml.com/sequence-diagram
-
-autonumber 1.1
-售卖机 -> 阿里云服务器: 售卖机管理员登陆后填入机器用户名和密码向服务器后获取token
-阿里云服务器 --> 售卖机: 给售卖机发放token,存入售卖机localStorage里面
-@enduml
-
