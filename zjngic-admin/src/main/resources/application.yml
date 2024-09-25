@@ -36,7 +36,7 @@ logging:
   level:
     com.zjngic: debug
     org.springframework: warn
-
+  config: classpath:logback.xml
 # 用户配置
 user:
   password:
@@ -87,6 +87,23 @@ spring:
         max-active: 8
         # #连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: -1ms
+  #MQTT配置信息
+  mqtt:
+    #MQTT服务地址，端口号默认1883，如果有多个，用逗号隔开
+    url: tcp://127.0.0.1:1883
+    #用户名
+    username: admin
+    #密码
+    password: 123
+
+    #客户端id(不能重复)
+    client:
+      send_id: send_id
+      listen_id: listen_id
+    #MQTT默认的消息推送主题，实际可在调用接口是指定
+    default:
+      topic: topic
+
 
 # token配置
 token:
@@ -127,3 +144,4 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
