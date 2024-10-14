@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjngic.terminal.mapper.OriginalOrderMapper">
+    
+    <resultMap type="OriginalOrder" id="OriginalOrderResult">
+        <result property="id"    column="id"    />
+        <result property="machineCode"    column="machine_code"    />
+        <result property="orderJson"    column="order_json"    />
+        <result property="amount"    column="amount"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOriginalOrderVo">
+        select id, machine_code, order_json, amount, order_status, create_time from original_order
+    </sql>
+
+    <select id="selectOriginalOrderList" parameterType="OriginalOrder" resultMap="OriginalOrderResult">
+        <include refid="selectOriginalOrderVo"/>
+        <where>  
+            <if test="machineCode != null  and machineCode != ''"> and machine_code = #{machineCode}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+        </where>
+    </select>
+    
+    <select id="selectOriginalOrderById" parameterType="Long" resultMap="OriginalOrderResult">
+        <include refid="selectOriginalOrderVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOriginalOrder" parameterType="OriginalOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into original_order
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="machineCode != null and machineCode != ''">machine_code,</if>
+            <if test="orderJson != null and orderJson != ''">order_json,</if>
+            <if test="amount != null">amount,</if>
+            <if test="orderStatus != null and orderStatus != ''">order_status,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="machineCode != null and machineCode != ''">#{machineCode},</if>
+            <if test="orderJson != null and orderJson != ''">#{orderJson},</if>
+            <if test="amount != null">#{amount},</if>
+            <if test="orderStatus != null and orderStatus != ''">#{orderStatus},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOriginalOrder" parameterType="OriginalOrder">
+        update original_order
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="machineCode != null and machineCode != ''">machine_code = #{machineCode},</if>
+            <if test="orderJson != null and orderJson != ''">order_json = #{orderJson},</if>
+            <if test="amount != null">amount = #{amount},</if>
+            <if test="orderStatus != null and orderStatus != ''">order_status = #{orderStatus},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOriginalOrderById" parameterType="Long">
+        delete from original_order where id = #{id}
+    </delete>
+
+    <delete id="deleteOriginalOrderByIds" parameterType="String">
+        delete from original_order where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

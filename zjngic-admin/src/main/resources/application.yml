@@ -95,7 +95,6 @@ spring:
     username: admin
     #密码
     password: 123
-
     #客户端id(不能重复)
     client:
       send_id: send_id

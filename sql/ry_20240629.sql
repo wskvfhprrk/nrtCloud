@@ -2,7 +2,7 @@ DROP DATABASE IF EXISTS zjngic;
 CREATE DATABASE zjngic
     CHARACTER SET utf8mb4
     COLLATE utf8mb4_unicode_ci;
-USE zjngic;
+USE `zjngic`;
 
 -- ----------------------------
 -- 1、部门表

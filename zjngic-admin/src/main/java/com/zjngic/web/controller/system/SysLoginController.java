@@ -2,7 +2,11 @@ package com.zjngic.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.config.authentication.PasswordEncoderParser;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +27,7 @@ import com.zjngic.system.service.ISysMenuService;
  * @author zjngic
  */
 @RestController
+@Slf4j
 public class SysLoginController
 {
     @Autowired
@@ -33,6 +38,8 @@ public class SysLoginController
 
     @Autowired
     private SysPermissionService permissionService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     /**
      * 登录方法
@@ -43,6 +50,8 @@ public class SysLoginController
     @PostMapping("/login")
     public AjaxResult login(@RequestBody LoginBody loginBody)    {
         AjaxResult ajax = AjaxResult.success();
+        String encode = passwordEncoder.encode(loginBody.getPassword());
+        log.warn("密码为：{}",encode);
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                 loginBody.getUuid());

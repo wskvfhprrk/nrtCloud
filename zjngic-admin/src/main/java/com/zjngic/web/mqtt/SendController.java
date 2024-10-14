@@ -30,7 +30,7 @@ public class SendController {
         }
     }
 
-    @PostConstruct
+//    @PostConstruct
     public void init(){
         while (true){
             try {
