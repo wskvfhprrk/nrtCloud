@@ -1,6 +1,7 @@
 package com.zjngic.terminal.service.impl;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.zjngic.common.constant.Constants;
 import com.zjngic.common.utils.DateUtils;
@@ -46,6 +47,19 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
         return terminalMachineMapper.selectTerminalMachineList(terminalMachine);
     }
 
+    public String createKey(String code){
+        TerminalMachine dto=new TerminalMachine();
+        dto.setCode(code);
+        List<TerminalMachine> terminalMachines = terminalMachineMapper.selectTerminalMachineList(dto);
+        if(terminalMachines.isEmpty())return null;
+        for (TerminalMachine terminalMachine : terminalMachines) {
+            String code1 = UUID.randomUUID().toString().replaceAll("-", "");
+            terminalMachine.setCode(code1);
+            updateTerminalMachine(terminalMachine);
+            return code1;
+        }
+        return null;
+    }
 
     public TerminalMachine getTerminalMachineByCode(String code) {
         Object o = redisTemplate.opsForValue().get(Constants.REDIS_MACHINE_KEY + "::" + code);
@@ -59,7 +73,7 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
     }
 
     public void saveRedis(TerminalMachine terminalMachine) {
-        redisTemplate.opsForValue().set(Constants.REDIS_MACHINE_KEY + "::" + terminalMachine.getCode(), terminalMachine);
+
     }
 
     /**
@@ -70,8 +84,16 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
      */
     @Override
     public int insertTerminalMachine(TerminalMachine terminalMachine) {
+        //判断code有没有
+        TerminalMachine dto=new TerminalMachine();
+        dto.setCode(terminalMachine.getCode());
+        List<TerminalMachine> terminalMachines = terminalMachineMapper.selectTerminalMachineList(dto);
+        if(!terminalMachines.isEmpty()){
+            return 0;
+        }
         terminalMachine.setCreateTime(DateUtils.getNowDate());
         saveRedis(terminalMachine);
+        redisTemplate.opsForValue().set(Constants.REDIS_MACHINE_KEY + "::" + terminalMachine.getCode(),terminalMachine);
         return terminalMachineMapper.insertTerminalMachine(terminalMachine);
     }
 
