@@ -47,7 +47,16 @@ public class TerminalMachineController extends BaseController
         List<TerminalMachine> list = terminalMachineService.selectTerminalMachineList(terminalMachine);
         return getDataTable(list);
     }
-
+    /**
+     * 获取、更新密钥
+     * @param terminalMachine id和code都可以，
+     * @return
+     */
+    @PreAuthorize("@ss.hasPermi('terminal:terminal:getKey')")
+    @GetMapping("/getKey")
+    public String getKey(TerminalMachine terminalMachine){
+        return terminalMachineService.getKey(terminalMachine);
+    }
     /**
      * 导出终端机器列表
      */

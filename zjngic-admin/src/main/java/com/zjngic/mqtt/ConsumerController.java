@@ -1,4 +1,4 @@
-package com.zjngic.web.mqtt;
+package com.zjngic.mqtt;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

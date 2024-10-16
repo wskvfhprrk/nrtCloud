@@ -47,15 +47,19 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
         return terminalMachineMapper.selectTerminalMachineList(terminalMachine);
     }
 
-    public String createKey(String code){
-        TerminalMachine dto=new TerminalMachine();
-        dto.setCode(code);
-        List<TerminalMachine> terminalMachines = terminalMachineMapper.selectTerminalMachineList(dto);
-        if(terminalMachines.isEmpty())return null;
-        for (TerminalMachine terminalMachine : terminalMachines) {
+    /**
+     * 获取、更新密钥
+     * @param terminalMachine id和code都可以，
+     * @return
+     */
+    public String getKey(TerminalMachine terminalMachine){
+        List<TerminalMachine> terminalMachines = terminalMachineMapper.selectTerminalMachineList(terminalMachine);
+        if(terminalMachines.isEmpty()||terminalMachines.size()>1)return null;
+        for (TerminalMachine terminalMachine1 : terminalMachines) {
+            //生成密钥
             String code1 = UUID.randomUUID().toString().replaceAll("-", "");
-            terminalMachine.setCode(code1);
-            updateTerminalMachine(terminalMachine);
+            terminalMachine1.setCode(code1);
+            updateTerminalMachine(terminalMachine1);
             return code1;
         }
         return null;
@@ -73,7 +77,8 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
     }
 
     public void saveRedis(TerminalMachine terminalMachine) {
-
+        //缓存中添加
+        redisTemplate.opsForValue().set(Constants.REDIS_MACHINE_KEY + "::" + terminalMachine.getCode(),terminalMachine);
     }
 
     /**
@@ -93,7 +98,6 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
         }
         terminalMachine.setCreateTime(DateUtils.getNowDate());
         saveRedis(terminalMachine);
-        redisTemplate.opsForValue().set(Constants.REDIS_MACHINE_KEY + "::" + terminalMachine.getCode(),terminalMachine);
         return terminalMachineMapper.insertTerminalMachine(terminalMachine);
     }
 

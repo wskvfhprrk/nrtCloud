@@ -1,38 +1,48 @@
-package com.zjngic.web.mqtt;
- 
+package com.zjngic.mqtt;
+
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Component;
 
-@Component
+/**
+ * 消息发布客户端回调
+ */
+@Configuration
 @Slf4j
-public class MqttConsumerCallBack implements MqttCallback{
+public class MqttProviderCallBack implements MqttCallback {
+
+    @Value("${spring.mqtt.client.send_id}")
+    private String clientId;
 
     @Autowired
     @Lazy
-    private MqttConsumerConfig mqttConsumerConfig;
+    private MqttProviderConfig mqttProviderConfig;
+
 
     private static final int MAX_RETRIES = 3; // 最大重试次数
     private static final int RETRY_INTERVAL_MS = 3000; // 每次重试间隔，单位为毫秒
     private int retryCount = 0; // 当前重试次数
 
-   /**
-     * 客户端断开连接的回调
+    /**
+     * 与服务器断开的回调
      */
     @Override
-    public void connectionLost(Throwable throwable) {
-        log.info("与服务器断开连接，正在新重连");
+    public void connectionLost(Throwable cause) {
+        log.info("{} 与服务器断开连接,正在重新连接", clientId);
         reconnect();
     }
+
 
     private void reconnect() {
         while (retryCount < MAX_RETRIES) {
             try {
-                mqttConsumerConfig.connect();
+                mqttProviderConfig.connect();
                 log.info("重连成功");
                 retryCount = 0; // 重置重试计数器
                 break;
@@ -61,18 +71,17 @@ public class MqttConsumerCallBack implements MqttCallback{
      */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
-        log.info(String.format("接收消息主题 : %s",topic));
-        log.info(String.format("接收消息Qos : %d",message.getQos()));
-        log.info(String.format("接收消息内容 : %s",new String(message.getPayload())));
-        log.info(String.format("接收消息retained : %b",message.isRetained()));
+
     }
- 
+
     /**
      * 消息发布成功的回调
      */
     @Override
-    public void deliveryComplete(IMqttDeliveryToken iMqttDeliveryToken) {
- 
+    public void deliveryComplete(IMqttDeliveryToken token) {
+        IMqttAsyncClient client = token.getClient();
+        log.info("{}   发布消息成功！", client.getClientId());
+
     }
-    
+
 }

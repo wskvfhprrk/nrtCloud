@@ -1,4 +1,4 @@
-package com.zjngic.web.mqtt;
+package com.zjngic.mqtt;
 
 import lombok.extern.slf4j.Slf4j;
 

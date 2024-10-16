@@ -28,6 +28,13 @@ public interface ITerminalMachineService
     public List<TerminalMachine> selectTerminalMachineList(TerminalMachine terminalMachine);
 
     /**
+     * 获取、更新密钥
+     * @param terminalMachine id和code都可以，
+     * @return
+     */
+    public String getKey(TerminalMachine terminalMachine);
+
+    /**
      * 新增终端机器
      * 
      * @param terminalMachine 终端机器
