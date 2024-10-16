@@ -67,8 +67,6 @@ public class MqttProviderConfig {
             options.setKeepAliveInterval(20);
             //设置遗嘱消息的话题，若客户端和服务器之间的连接意外断开，服务器将发布客户端的遗嘱信息
             options.setWill("willTopic", (clientId + "与服务器断开连接").getBytes(), 0, false);
-//            //断开重连
-//            options.setAutomaticReconnect(true);
             //设置回调
             client.setCallback(mqttProviderCallBack);
             client.connect(options);
@@ -79,6 +77,8 @@ public class MqttProviderConfig {
     }
 
     public void publish(int qos, boolean retained, String topic, String message) {
+        //加密发送
+
         MqttMessage mqttMessage = new MqttMessage();
         mqttMessage.setQos(qos);
         mqttMessage.setRetained(retained);

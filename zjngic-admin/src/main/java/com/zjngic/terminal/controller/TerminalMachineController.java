@@ -2,6 +2,8 @@ package com.zjngic.terminal.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
