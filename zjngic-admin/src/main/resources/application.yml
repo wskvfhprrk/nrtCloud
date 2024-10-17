@@ -7,6 +7,7 @@ zjngic:
   # 版权年份
   copyrightYear: 2024
   # 文件路径 示例（ Windows配置D:/zjngic/uploadPath，Linux配置 /home/zjngic/uploadPath）
+#  profile: home/zjngic/uploadPath
   profile: D:/zjngic/uploadPath
   # 获取ip地址开关
   addressEnabled: false
@@ -91,14 +92,15 @@ spring:
   mqtt:
     #MQTT服务地址，端口号默认1883，如果有多个，用逗号隔开
     url: tcp://127.0.0.1:1883
+#    url: tcp://www.zjngic.com:1884
     #用户名
     username: admin
     #密码
     password: 123
     #客户端id(不能重复)
     client:
-      send_id: send_id
-      listen_id: listen_id
+      send_id: ${random.value}
+      listen_id: ${random.value}
     #MQTT默认的消息推送主题，实际可在调用接口是指定
     default:
       topic: topic

@@ -81,7 +81,7 @@
 
     <el-table v-loading="loading" :data="terminalList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="ID" align="center" prop="id" />
+<!--      <el-table-column label="ID" align="center" prop="id" />-->
       <el-table-column label="编号" align="center" prop="code" />
       <el-table-column label="密码" align="center" prop="password" />
       <el-table-column label="生成密钥" align="center" prop="generatedKey" />

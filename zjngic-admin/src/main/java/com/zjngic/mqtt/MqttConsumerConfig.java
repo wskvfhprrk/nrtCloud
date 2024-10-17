@@ -66,16 +66,14 @@ public class MqttConsumerConfig {
             options.setKeepAliveInterval(20);
             //设置遗嘱消息的话题，若客户端和服务器之间的连接意外断开，服务器将发布客户端的遗嘱信息
             options.setWill("willTopic",(clientId + "与服务器断开连接").getBytes(),0,false);
-//            //断开重连
-//            options.setAutomaticReconnect(true);
             //设置回调
             client.setCallback(mqttConsumerCallBack);
             client.connect(options);
             //订阅主题
             //消息等级，和主题数组一一对应，服务端将按照指定等级给订阅了主题的客户端推送消息
             int[] qos = {1,1};
-            //主题
-            String[] topics = {"topic/#","topic1"};
+            //主题——只有getKey不用签名，message主题要签名，它可以这幅图二级topic——message/order
+            String[] topics = {"getKey/#","message/#"};
               //订阅主题
             client.subscribe(topics,qos);
         } catch (MqttException e) {

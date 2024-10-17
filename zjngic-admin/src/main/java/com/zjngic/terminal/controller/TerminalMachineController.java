@@ -3,7 +3,6 @@ package com.zjngic.terminal.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,13 +48,13 @@ public class TerminalMachineController extends BaseController
     }
     /**
      * 获取、更新密钥
-     * @param terminalMachine id和code都可以，
+     * @param terminalMachine 机器编号 ，
      * @return
      */
-    @PreAuthorize("@ss.hasPermi('terminal:terminal:getKey')")
-    @GetMapping("/getKey")
-    public String getKey(TerminalMachine terminalMachine){
-        return terminalMachineService.getKey(terminalMachine);
+//    @PreAuthorize("@ss.hasPermi('terminal:terminal:getCerts')")
+    @GetMapping("/getCerts")
+    public AjaxResult getCerts( TerminalMachine terminalMachine){
+        return terminalMachineService.getCerts(terminalMachine);
     }
     /**
      * 导出终端机器列表
@@ -66,7 +65,7 @@ public class TerminalMachineController extends BaseController
     public void export(HttpServletResponse response, TerminalMachine terminalMachine)
     {
         List<TerminalMachine> list = terminalMachineService.selectTerminalMachineList(terminalMachine);
-        ExcelUtil<TerminalMachine> util = new ExcelUtil<TerminalMachine>(TerminalMachine.class);
+        ExcelUtil<TerminalMachine> util = new ExcelUtil<>(TerminalMachine.class);
         util.exportExcel(response, list, "终端机器数据");
     }
 

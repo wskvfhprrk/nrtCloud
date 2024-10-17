@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.zjngic.common.constant.Constants;
+import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.common.utils.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -52,17 +53,17 @@ public class TerminalMachineServiceImpl implements ITerminalMachineService {
      * @param terminalMachine id和code都可以，
      * @return
      */
-    public String getKey(TerminalMachine terminalMachine){
+    public AjaxResult getCerts(TerminalMachine terminalMachine){
         List<TerminalMachine> terminalMachines = terminalMachineMapper.selectTerminalMachineList(terminalMachine);
-        if(terminalMachines.isEmpty()||terminalMachines.size()>1)return null;
+        if(terminalMachines.isEmpty())return AjaxResult.error("机器码和密码错误！");
         for (TerminalMachine terminalMachine1 : terminalMachines) {
             //生成密钥
-            String code1 = UUID.randomUUID().toString().replaceAll("-", "");
-            terminalMachine1.setCode(code1);
+            String key = UUID.randomUUID().toString().replaceAll("-", "");
+            terminalMachine1.setGeneratedKey(key);
             updateTerminalMachine(terminalMachine1);
-            return code1;
+            return AjaxResult.success(key);
         }
-        return null;
+        return AjaxResult.error();
     }
 
     public TerminalMachine getTerminalMachineByCode(String code) {

@@ -1,6 +1,8 @@
 package com.zjngic.terminal.service;
 
 import java.util.List;
+
+import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.terminal .domain.TerminalMachine;
 
 /**
@@ -32,7 +34,7 @@ public interface ITerminalMachineService
      * @param terminalMachine id和code都可以，
      * @return
      */
-    public String getKey(TerminalMachine terminalMachine);
+    public AjaxResult getCerts(TerminalMachine terminalMachine);
 
     /**
      * 新增终端机器
