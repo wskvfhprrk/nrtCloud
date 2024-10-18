@@ -37,23 +37,29 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
         //支付完成后发送状态
         //需要使用订单号更换自定义订单号
         Object o = redisTemplate.opsForValue().get(Constants.PAY_ORDER_ID + "::" + outTradeNo);
-        if(o==null){
+        if (o == null) {
             log.error("已经没有此订单了");
             return;
         }
-        OrderPayMessage orderPayMessage =JSON.parseObject(o.toString(),OrderPayMessage.class);
+        OrderPayMessage orderPayMessage = JSON.parseObject(o.toString(), OrderPayMessage.class);
         orderPayMessage.setIsPaymentCompleted(true);
         redisTemplate.delete(Constants.PAY_ORDER_ID + "::" + outTradeNo);
-        Object o1 = redisTemplate.opsForValue().get(Constants.REDIS_MACHINE_KEY+"::"+orderPayMessage.getMachineCode());
+        Object o1 = redisTemplate.opsForValue().get(Constants.REDIS_MACHINE_KEY + "::" + orderPayMessage.getMachineCode());
         if (o1 == null) {
             log.error("没有密钥");
             return;
         }
-        TerminalMachine terminalMachine=(TerminalMachine) o1;
         try {
-            String s = JSON.toJSONString(signService.signByData(JSON.toJSONString(orderPayMessage), terminalMachine.getPassword()));
             // TODO: 2024/10/12 订单状态更改为已支付
+            o = redisTemplate.opsForValue().get(Constants.ORIGINAL_ORDER_ID + "::" + outTradeNo);
+            if (o == null) {
+                log.error("缓存中没有订单：{}", outTradeNo);
+                return;
+            }
+            TerminalMachine terminalMachine=(TerminalMachine) o1;
+            String s = JSON.toJSONString(signService.signByData(String.valueOf(o), terminalMachine.getGeneratedKey()));
             mqttProviderConfig.publish(0, false, "message/paySuccess/" + terminalMachine.getCode(), s);
+            redisTemplate.delete(Constants.ORIGINAL_ORDER_ID + "::" + outTradeNo);
         } catch (Exception e) {
             e.printStackTrace();
         }

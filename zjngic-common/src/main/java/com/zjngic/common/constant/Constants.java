@@ -174,4 +174,6 @@ public class Constants
     public static final String PAY_DATA = "payData";
     public static final String ORDER_ID = "orderID";
     public static final String PAY_ORDER_ID = "payOrderId";
+    public static final String ORIGINAL_ORDER_ID = "OriginalOrderId";
+
 }

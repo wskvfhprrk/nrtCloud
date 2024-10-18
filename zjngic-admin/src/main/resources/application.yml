@@ -158,11 +158,10 @@ pay:
     #appID
     appid: wxcb93b6485f421333
     #支付回调域名，必须是https
-    notifyUrl: https://www.zjngic.com//prod-api/
-#    notifyUrl: https://zbuwen8k99yg.guyubao.com
+#    notifyUrl: https://www.zjngic.com//prod-api/
+    notifyUrl: https://zbuwen8k99yg.guyubao.com
     #密钥文件路径——实际存放路径
-#    privateKeyFilePath: D:\\certs\\apiclient_key.pem
-    privateKeyFilePath: /etc/certs/apiclient_key.pem
+    privateKeyFilePath: D:\\certs\\apiclient_key.pem
 
 # Linux 环境的路径
 ---

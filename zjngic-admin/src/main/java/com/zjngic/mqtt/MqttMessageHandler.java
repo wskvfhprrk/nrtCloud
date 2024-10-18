@@ -5,10 +5,13 @@ import com.hejz.pay.wx.WxNativePayTemplate;
 import com.hejz.util.SignUtil;
 import com.hejz.util.dto.SignDto;
 import com.hejz.util.service.SignService;
+import com.hejz.util.vo.SignVo;
 import com.zjngic.common.constant.Constants;
 import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.terminal.domain.TerminalMachine;
+import com.zjngic.vo.Order;
 import com.zjngic.vo.OrderPayMessage;
+import com.zjngic.vo.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +89,12 @@ public class MqttMessageHandler {
                 mqttProviderConfig.publish(0, false, "message/pay/" + topic.split("/")[2], JSON.toJSONString(signService.signDataToVo(dto1,terminalMachine.getGeneratedKey())));
                 //缓存下订单，等成功能后根据订单id再删除
                 redisTemplate.opsForValue().set(Constants.PAY_ORDER_ID + "::" + orderPayMessage.getOutTradeNo(), JSON.toJSONString(orderPayMessage));
+                SignVo signVo = JSON.parseObject(String.valueOf(message), SignVo.class);
+                Order order = JSON.parseObject(signVo.getData(), Order.class);
+                order.setOrderId(outTradeNo);
+                order.setCustomerName(orderId);
+//                order.setStatus(OrderStatus.PENDING);
+                redisTemplate.opsForValue().set(Constants.ORIGINAL_ORDER_ID + "::" + orderPayMessage.getOutTradeNo(), JSON.toJSONString(order));
             }
         }
     }
