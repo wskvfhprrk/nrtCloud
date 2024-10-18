@@ -107,6 +107,12 @@ public class MqttConsumerCallBack implements MqttCallback {
             }
             AjaxResult result = terminalMachineService.getCerts(terminalMachine);
             mqttProviderConfig.publish(0, false, "key/" + topic.split("/")[1], JSON.toJSONString(result));
+        }else {
+            try {
+                mqttMessageHandler.message(topic,message);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
