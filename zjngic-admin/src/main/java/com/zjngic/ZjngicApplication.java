@@ -12,6 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @author zjngic
  */
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@ComponentScan(basePackages = {"com.hejz","com.zjngic"})
 public class ZjngicApplication {
     public static void main(String[] args) {
         SpringApplication.run(ZjngicApplication.class, args);

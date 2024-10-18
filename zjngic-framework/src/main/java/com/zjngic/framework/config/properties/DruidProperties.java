@@ -3,6 +3,7 @@ package com.zjngic.framework.config.properties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import com.alibaba.druid.pool.DruidDataSource;
+import org.springframework.context.annotation.PropertySource;
 
 /**
  * druid 配置属性
@@ -10,6 +11,7 @@ import com.alibaba.druid.pool.DruidDataSource;
  * @author zjngic
  */
 @Configuration
+@PropertySource("classpath:application-druid.yml")
 public class DruidProperties
 {
     @Value("${spring.datasource.druid.initialSize}")

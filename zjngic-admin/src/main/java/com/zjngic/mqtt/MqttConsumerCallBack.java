@@ -3,7 +3,8 @@ package com.zjngic.mqtt;
 import com.alibaba.fastjson2.JSON;
 import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.terminal.domain.TerminalMachine;
-import com.zjngic.terminal.service.impl.TerminalMachineServiceImpl;
+import com.zjngic.terminal.mapper.TerminalMachineMapper;
+import com.zjngic.terminal.service.ITerminalMachineService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -24,10 +25,12 @@ public class MqttConsumerCallBack implements MqttCallback {
     private MqttConsumerConfig mqttConsumerConfig;
 
     @Autowired
-    private TerminalMachineServiceImpl terminalMachineService;
+    private ITerminalMachineService terminalMachineService;
 
     @Autowired
     private MqttProviderConfig mqttProviderConfig;
+    @Autowired
+    private MqttMessageHandler mqttMessageHandler;
 
     private static final int MAX_RETRIES = 3; // 最大重试次数
     private static final int RETRY_INTERVAL_MS = 3000; // 每次重试间隔，单位为毫秒
@@ -104,9 +107,6 @@ public class MqttConsumerCallBack implements MqttCallback {
             }
             AjaxResult result = terminalMachineService.getCerts(terminalMachine);
             mqttProviderConfig.publish(0, false, "key/" + topic.split("/")[1], JSON.toJSONString(result));
-        }
-        if (topic.split("/")[0].equals("message")) {
-
         }
     }
 

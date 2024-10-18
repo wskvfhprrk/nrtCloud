@@ -170,5 +170,8 @@ public class Constants
      */
     public static final String[] JOB_ERROR_STR = { "java.net.URL", "javax.naming.InitialContext", "org.yaml.snakeyaml",
             "org.springframework", "org.apache", "com.zjngic.common.utils.file", "com.zjngic.common.config", "com.zjngic.generator" };
-    public static final String REDIS_MACHINE_KEY = "MachineKey";
+    public static final String REDIS_MACHINE_KEY = "machineKey";
+    public static final String PAY_DATA = "payData";
+    public static final String ORDER_ID = "orderID";
+    public static final String PAY_ORDER_ID = "payOrderId";
 }
