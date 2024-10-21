@@ -3,7 +3,6 @@ package com.zjngic.mqtt;
 import com.alibaba.fastjson2.JSON;
 import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.terminal.domain.TerminalMachine;
-import com.zjngic.terminal.mapper.TerminalMachineMapper;
 import com.zjngic.terminal.service.ITerminalMachineService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;

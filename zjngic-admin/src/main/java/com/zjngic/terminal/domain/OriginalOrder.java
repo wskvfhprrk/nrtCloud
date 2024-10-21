@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 原始订单对象 original_order
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-21
  */
 public class OriginalOrder extends BaseEntity
 {
@@ -32,7 +32,7 @@ public class OriginalOrder extends BaseEntity
 
     /** 订单状态 */
     @Excel(name = "订单状态")
-    private String orderStatus;
+    private Integer orderStatus;
 
     public void setId(Long id) 
     {
@@ -70,12 +70,12 @@ public class OriginalOrder extends BaseEntity
     {
         return amount;
     }
-    public void setOrderStatus(String orderStatus) 
+    public void setOrderStatus(Integer orderStatus) 
     {
         this.orderStatus = orderStatus;
     }
 
-    public String getOrderStatus() 
+    public Integer getOrderStatus() 
     {
         return orderStatus;
     }

@@ -22,7 +22,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="machineCode != null  and machineCode != ''"> and machine_code = #{machineCode}</if>
             <if test="amount != null "> and amount = #{amount}</if>
-            <if test="orderStatus != null  and orderStatus != ''"> and order_status = #{orderStatus}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
         </where>
     </select>
     
@@ -37,14 +37,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="machineCode != null and machineCode != ''">machine_code,</if>
             <if test="orderJson != null and orderJson != ''">order_json,</if>
             <if test="amount != null">amount,</if>
-            <if test="orderStatus != null and orderStatus != ''">order_status,</if>
+            <if test="orderStatus != null">order_status,</if>
             <if test="createTime != null">create_time,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="machineCode != null and machineCode != ''">#{machineCode},</if>
             <if test="orderJson != null and orderJson != ''">#{orderJson},</if>
             <if test="amount != null">#{amount},</if>
-            <if test="orderStatus != null and orderStatus != ''">#{orderStatus},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
             <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="machineCode != null and machineCode != ''">machine_code = #{machineCode},</if>
             <if test="orderJson != null and orderJson != ''">order_json = #{orderJson},</if>
             <if test="amount != null">amount = #{amount},</if>
-            <if test="orderStatus != null and orderStatus != ''">order_status = #{orderStatus},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
         </trim>
         where id = #{id}

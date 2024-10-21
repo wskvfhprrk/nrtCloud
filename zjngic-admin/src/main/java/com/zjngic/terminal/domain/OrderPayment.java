@@ -23,7 +23,7 @@ public class OrderPayment extends BaseEntity
 
     /** 订单ID */
     @Excel(name = "订单ID")
-    private Long orderId;
+    private String orderId;
 
     /** 机器编号 */
     @Excel(name = "机器编号")
@@ -72,12 +72,12 @@ public class OrderPayment extends BaseEntity
     {
         return id;
     }
-    public void setOrderId(Long orderId) 
+    public void setOrderId(String orderId)
     {
         this.orderId = orderId;
     }
 
-    public Long getOrderId() 
+    public String getOrderId()
     {
         return orderId;
     }

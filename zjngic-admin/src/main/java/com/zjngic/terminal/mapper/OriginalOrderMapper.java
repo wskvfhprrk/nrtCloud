@@ -1,7 +1,9 @@
 package com.zjngic.terminal.mapper;
 
-import java.util.List;
 import com.zjngic.terminal.domain.OriginalOrder;
+
+import java.util.List;
+
 
 /**
  * 原始订单Mapper接口

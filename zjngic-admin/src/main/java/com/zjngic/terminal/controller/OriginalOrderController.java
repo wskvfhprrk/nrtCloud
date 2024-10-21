@@ -2,6 +2,8 @@ package com.zjngic.terminal.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.zjngic.terminal.domain.OriginalOrder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +18,6 @@ import com.zjngic.common.annotation.Log;
 import com.zjngic.common.core.controller.BaseController;
 import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.common.enums.BusinessType;
-import com.zjngic.terminal.domain.OriginalOrder;
 import com.zjngic.terminal.service.IOriginalOrderService;
 import com.zjngic.common.utils.poi.ExcelUtil;
 import com.zjngic.common.core.page.TableDataInfo;

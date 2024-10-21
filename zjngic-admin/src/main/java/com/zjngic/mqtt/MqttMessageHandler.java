@@ -7,8 +7,11 @@ import com.hejz.util.dto.SignDto;
 import com.hejz.util.service.SignService;
 import com.hejz.util.vo.SignVo;
 import com.zjngic.common.constant.Constants;
-import com.zjngic.common.core.domain.AjaxResult;
+import com.zjngic.terminal.domain.OrderPayment;
+import com.zjngic.terminal.domain.OriginalOrder;
 import com.zjngic.terminal.domain.TerminalMachine;
+import com.zjngic.terminal.service.IOrderPaymentService;
+import com.zjngic.terminal.service.IOriginalOrderService;
 import com.zjngic.vo.Order;
 import com.zjngic.vo.OrderPayMessage;
 import com.zjngic.vo.OrderStatus;
@@ -18,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
 
@@ -32,6 +36,10 @@ public class MqttMessageHandler {
     private WxNativePayTemplate wxNativePayTemplate;
     @Autowired
     private MqttProviderConfig mqttProviderConfig;
+    @Autowired
+    private IOriginalOrderService OriginalOrderService;
+    @Autowired
+    private IOrderPaymentService orderPaymentService;
 
     public void message(String topic, MqttMessage message) throws Exception {
         //查询缓存中的密钥
@@ -94,7 +102,23 @@ public class MqttMessageHandler {
                 order.setOrderId(outTradeNo);
                 order.setCustomerName(orderId);
 //                order.setStatus(OrderStatus.PENDING);
+                //写进缓存中
                 redisTemplate.opsForValue().set(Constants.ORIGINAL_ORDER_ID + "::" + orderPayMessage.getOutTradeNo(), JSON.toJSONString(order));
+                //写进数据库中
+                OriginalOrder originalOrder=new OriginalOrder();
+                originalOrder.setMachineCode(String.valueOf(topic.split("/")[2]));
+                originalOrder.setOrderJson(JSON.toJSONString(order));
+                originalOrder.setOrderStatus(OrderStatus.TO_BE_PAID.ordinal());
+                originalOrder.setAmount(BigDecimal.valueOf(order.getSelectedPrice()));
+                int i = OriginalOrderService.insertOriginalOrder(originalOrder);
+                //支付数据库
+                OrderPayment orderPayment=new OrderPayment();
+                orderPayment.setOrderId(orderId);
+                orderPayment.setPaymentStatus(OrderStatus.TO_BE_PAID.ordinal());
+                orderPayment.setMachineCode(String.valueOf(topic.split("/")[2]));
+                orderPayment.setPayAmount(BigDecimal.valueOf(order.getSelectedPrice()));
+                orderPayment.setPayMethod(0);
+                orderPaymentService.insertOrderPayment(orderPayment);
             }
         }
     }

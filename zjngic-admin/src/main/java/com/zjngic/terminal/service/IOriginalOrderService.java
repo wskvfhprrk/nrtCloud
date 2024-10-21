@@ -1,7 +1,8 @@
 package com.zjngic.terminal.service;
 
-import java.util.List;
 import com.zjngic.terminal.domain.OriginalOrder;
+
+import java.util.List;
 
 /**
  * 原始订单Service接口
