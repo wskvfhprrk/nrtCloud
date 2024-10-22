@@ -110,6 +110,7 @@ public class MqttMessageHandler {
                 originalOrder.setOrderJson(JSON.toJSONString(order));
                 originalOrder.setOrderStatus(OrderStatus.TO_BE_PAID.ordinal());
                 originalOrder.setAmount(BigDecimal.valueOf(order.getSelectedPrice()));
+                originalOrder.setOutTradeNo(outTradeNo);
                 int i = OriginalOrderService.insertOriginalOrder(originalOrder);
                 //支付数据库
                 OrderPayment orderPayment=new OrderPayment();
@@ -118,6 +119,7 @@ public class MqttMessageHandler {
                 orderPayment.setMachineCode(String.valueOf(topic.split("/")[2]));
                 orderPayment.setPayAmount(BigDecimal.valueOf(order.getSelectedPrice()));
                 orderPayment.setPayMethod(0);
+                orderPayment.setOutTradeNo(outTradeNo);
                 orderPaymentService.insertOrderPayment(orderPayment);
             }
         }

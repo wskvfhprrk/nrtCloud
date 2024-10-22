@@ -3,7 +3,7 @@ package com.zjngic.terminal.service;
 import java.util.List;
 
 import com.zjngic.common.core.domain.AjaxResult;
-import com.zjngic.terminal .domain.TerminalMachine;
+import com.zjngic.terminal.domain.TerminalMachine;
 
 /**
  * 终端机器Service接口

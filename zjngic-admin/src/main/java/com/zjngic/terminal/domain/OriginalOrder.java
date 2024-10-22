@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 原始订单对象 original_order
  * 
  * @author zjngic
- * @date 2024-10-21
+ * @date 2024-10-22
  */
 public class OriginalOrder extends BaseEntity
 {
@@ -23,7 +23,12 @@ public class OriginalOrder extends BaseEntity
     @Excel(name = "机器编号")
     private String machineCode;
 
+    /** 支付订单号 */
+    @Excel(name = "支付订单号")
+    private String outTradeNo;
+
     /** 订单的JSON字符串 */
+    @Excel(name = "订单的JSON字符串")
     private String orderJson;
 
     /** 订单金额 */
@@ -51,6 +56,15 @@ public class OriginalOrder extends BaseEntity
     public String getMachineCode() 
     {
         return machineCode;
+    }
+    public void setOutTradeNo(String outTradeNo) 
+    {
+        this.outTradeNo = outTradeNo;
+    }
+
+    public String getOutTradeNo() 
+    {
+        return outTradeNo;
     }
     public void setOrderJson(String orderJson) 
     {
@@ -85,6 +99,7 @@ public class OriginalOrder extends BaseEntity
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("machineCode", getMachineCode())
+            .append("outTradeNo", getOutTradeNo())
             .append("orderJson", getOrderJson())
             .append("amount", getAmount())
             .append("orderStatus", getOrderStatus())

@@ -7,6 +7,8 @@ import com.hejz.pay.wx.service.RefundSuccessService;
 import com.hejz.util.service.SignService;
 import com.zjngic.common.constant.Constants;
 import com.zjngic.terminal.domain.TerminalMachine;
+import com.zjngic.terminal.service.IOriginalOrderService;
+import com.zjngic.terminal.service.impl.OrderPaymentServiceImpl;
 import com.zjngic.vo.OrderPayMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,10 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
     private RedisTemplate redisTemplate;
     @Autowired
     private SignService signService;
+    @Autowired
+    private IOriginalOrderService originalOrderService;
+    @Autowired
+    private OrderPaymentServiceImpl orderPaymentService;
 
 
     @Override
@@ -59,6 +65,9 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
             TerminalMachine terminalMachine=(TerminalMachine) o1;
             String s = JSON.toJSONString(signService.signByData(String.valueOf(o), terminalMachine.getGeneratedKey()));
             mqttProviderConfig.publish(0, false, "message/paySuccess/" + terminalMachine.getCode(), s);
+            //更新原始订单状态
+
+            //更新支付计单状态
             redisTemplate.delete(Constants.ORIGINAL_ORDER_ID + "::" + outTradeNo);
         } catch (Exception e) {
             e.printStackTrace();

@@ -81,7 +81,7 @@
 
     <el-table v-loading="loading" :data="terminalList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-<!--      <el-table-column label="ID" align="center" prop="id" />-->
+      <el-table-column label="ID" align="center" prop="id" />
       <el-table-column label="编号" align="center" prop="code" />
       <el-table-column label="密码" align="center" prop="password" />
       <el-table-column label="生成密钥" align="center" prop="generatedKey" />
@@ -110,7 +110,7 @@
         </template>
       </el-table-column>
     </el-table>
-
+    
     <pagination
       v-show="total>0"
       :total="total"
@@ -128,9 +128,9 @@
         <el-form-item label="密码" prop="password">
           <el-input v-model="form.password" placeholder="请输入密码" />
         </el-form-item>
-<!--        <el-form-item label="生成密钥" prop="generatedKey">
+        <el-form-item label="生成密钥" prop="generatedKey">
           <el-input v-model="form.generatedKey" placeholder="请输入生成密钥" />
-        </el-form-item>-->
+        </el-form-item>
         <el-form-item label="机器描述" prop="description">
           <el-input v-model="form.description" placeholder="请输入机器描述" />
         </el-form-item>
@@ -153,13 +153,7 @@
 </template>
 
 <script>
-import {
-  listTerminal,
-  getTerminal,
-  delTerminal,
-  addTerminal,
-  updateTerminal
-} from "@/api/terminal/terminal";
+import { listTerminal, getTerminal, delTerminal, addTerminal, updateTerminal } from "@/api/terminal/terminal";
 
 export default {
   name: "Terminal",
@@ -291,7 +285,6 @@ export default {
               this.getList();
             });
           }
-        }else {
         }
       });
     },

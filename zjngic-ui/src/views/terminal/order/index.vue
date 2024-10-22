@@ -9,6 +9,14 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
+      <el-form-item label="支付订单号" prop="outTradeNo">
+        <el-input
+          v-model="queryParams.outTradeNo"
+          placeholder="请输入支付订单号"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
+      </el-form-item>
       <el-form-item label="订单金额" prop="amount">
         <el-input
           v-model="queryParams.amount"
@@ -83,6 +91,7 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="订单ID" align="center" prop="id" />
       <el-table-column label="机器编号" align="center" prop="machineCode" />
+      <el-table-column label="支付订单号" align="center" prop="outTradeNo" />
       <el-table-column label="订单金额" align="center" prop="amount" />
       <el-table-column label="订单状态" align="center" prop="orderStatus">
         <template slot-scope="scope">
@@ -108,7 +117,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"
@@ -123,6 +132,9 @@
         <el-form-item label="机器编号" prop="machineCode">
           <el-input v-model="form.machineCode" placeholder="请输入机器编号" />
         </el-form-item>
+        <el-form-item label="支付订单号" prop="outTradeNo">
+          <el-input v-model="form.outTradeNo" placeholder="请输入支付订单号" />
+        </el-form-item>
         <el-form-item label="订单金额" prop="amount">
           <el-input v-model="form.amount" placeholder="请输入订单金额" />
         </el-form-item>
@@ -131,7 +143,7 @@
             <el-radio
               v-for="dict in dict.type.order_status"
               :key="dict.value"
-              :label="dict.value"
+              :label="parseInt(dict.value)"
             >{{dict.label}}</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -175,6 +187,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         machineCode: null,
+        outTradeNo: null,
         amount: null,
         orderStatus: null,
       },
@@ -185,8 +198,8 @@ export default {
         machineCode: [
           { required: true, message: "机器编号不能为空", trigger: "blur" }
         ],
-        orderJson: [
-          { required: true, message: "订单的JSON字符串不能为空", trigger: "blur" }
+        outTradeNo: [
+          { required: true, message: "支付订单号不能为空", trigger: "blur" }
         ],
         amount: [
           { required: true, message: "订单金额不能为空", trigger: "blur" }
@@ -223,6 +236,7 @@ export default {
       this.form = {
         id: null,
         machineCode: null,
+        outTradeNo: null,
         orderJson: null,
         amount: null,
         orderStatus: null,

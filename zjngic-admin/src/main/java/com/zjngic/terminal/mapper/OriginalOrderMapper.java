@@ -1,15 +1,13 @@
 package com.zjngic.terminal.mapper;
 
-import com.zjngic.terminal.domain.OriginalOrder;
-
 import java.util.List;
-
+import com.zjngic.terminal.domain.OriginalOrder;
 
 /**
  * 原始订单Mapper接口
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 public interface OriginalOrderMapper 
 {

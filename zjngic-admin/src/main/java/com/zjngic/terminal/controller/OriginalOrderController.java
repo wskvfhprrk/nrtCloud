@@ -2,8 +2,6 @@ package com.zjngic.terminal.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
-
-import com.zjngic.terminal.domain.OriginalOrder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +16,7 @@ import com.zjngic.common.annotation.Log;
 import com.zjngic.common.core.controller.BaseController;
 import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.common.enums.BusinessType;
+import com.zjngic.terminal.domain.OriginalOrder;
 import com.zjngic.terminal.service.IOriginalOrderService;
 import com.zjngic.common.utils.poi.ExcelUtil;
 import com.zjngic.common.core.page.TableDataInfo;
@@ -26,7 +25,7 @@ import com.zjngic.common.core.page.TableDataInfo;
  * 原始订单Controller
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 @RestController
 @RequestMapping("/terminal/order")
@@ -38,7 +37,7 @@ public class OriginalOrderController extends BaseController
     /**
      * 查询原始订单列表
      */
-    @PreAuthorize("@ss.hasPermi('terminal:order:list')")
+    @PreAuthorize("@ss.hasPermi('terminal :order:list')")
     @GetMapping("/list")
     public TableDataInfo list(OriginalOrder originalOrder)
     {
@@ -50,7 +49,7 @@ public class OriginalOrderController extends BaseController
     /**
      * 导出原始订单列表
      */
-    @PreAuthorize("@ss.hasPermi('terminal:order:export')")
+    @PreAuthorize("@ss.hasPermi('terminal :order:export')")
     @Log(title = "原始订单", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, OriginalOrder originalOrder)
@@ -63,7 +62,7 @@ public class OriginalOrderController extends BaseController
     /**
      * 获取原始订单详细信息
      */
-    @PreAuthorize("@ss.hasPermi('terminal:order:query')")
+    @PreAuthorize("@ss.hasPermi('terminal :order:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -73,7 +72,7 @@ public class OriginalOrderController extends BaseController
     /**
      * 新增原始订单
      */
-    @PreAuthorize("@ss.hasPermi('terminal:order:add')")
+    @PreAuthorize("@ss.hasPermi('terminal :order:add')")
     @Log(title = "原始订单", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody OriginalOrder originalOrder)
@@ -84,7 +83,7 @@ public class OriginalOrderController extends BaseController
     /**
      * 修改原始订单
      */
-    @PreAuthorize("@ss.hasPermi('terminal:order:edit')")
+    @PreAuthorize("@ss.hasPermi('terminal :order:edit')")
     @Log(title = "原始订单", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody OriginalOrder originalOrder)
@@ -95,7 +94,7 @@ public class OriginalOrderController extends BaseController
     /**
      * 删除原始订单
      */
-    @PreAuthorize("@ss.hasPermi('terminal:order:remove')")
+    @PreAuthorize("@ss.hasPermi('terminal :order:remove')")
     @Log(title = "原始订单", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

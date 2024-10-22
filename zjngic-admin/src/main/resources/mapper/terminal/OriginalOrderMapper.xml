@@ -7,6 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="OriginalOrder" id="OriginalOrderResult">
         <result property="id"    column="id"    />
         <result property="machineCode"    column="machine_code"    />
+        <result property="outTradeNo"    column="out_trade_no"    />
         <result property="orderJson"    column="order_json"    />
         <result property="amount"    column="amount"    />
         <result property="orderStatus"    column="order_status"    />
@@ -14,13 +15,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOriginalOrderVo">
-        select id, machine_code, order_json, amount, order_status, create_time from original_order
+        select id, machine_code, out_trade_no, order_json, amount, order_status, create_time from original_order
     </sql>
 
     <select id="selectOriginalOrderList" parameterType="OriginalOrder" resultMap="OriginalOrderResult">
         <include refid="selectOriginalOrderVo"/>
         <where>  
             <if test="machineCode != null  and machineCode != ''"> and machine_code = #{machineCode}</if>
+            <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no = #{outTradeNo}</if>
+            <if test="orderJson != null  and orderJson != ''"> and order_json = #{orderJson}</if>
             <if test="amount != null "> and amount = #{amount}</if>
             <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
         </where>
@@ -35,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into original_order
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="machineCode != null and machineCode != ''">machine_code,</if>
+            <if test="outTradeNo != null and outTradeNo != ''">out_trade_no,</if>
             <if test="orderJson != null and orderJson != ''">order_json,</if>
             <if test="amount != null">amount,</if>
             <if test="orderStatus != null">order_status,</if>
@@ -42,6 +46,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="machineCode != null and machineCode != ''">#{machineCode},</if>
+            <if test="outTradeNo != null and outTradeNo != ''">#{outTradeNo},</if>
             <if test="orderJson != null and orderJson != ''">#{orderJson},</if>
             <if test="amount != null">#{amount},</if>
             <if test="orderStatus != null">#{orderStatus},</if>
@@ -53,6 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update original_order
         <trim prefix="SET" suffixOverrides=",">
             <if test="machineCode != null and machineCode != ''">machine_code = #{machineCode},</if>
+            <if test="outTradeNo != null and outTradeNo != ''">out_trade_no = #{outTradeNo},</if>
             <if test="orderJson != null and orderJson != ''">order_json = #{orderJson},</if>
             <if test="amount != null">amount = #{amount},</if>
             <if test="orderStatus != null">order_status = #{orderStatus},</if>

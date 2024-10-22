@@ -1,14 +1,13 @@
 package com.zjngic.terminal.service;
 
-import com.zjngic.terminal.domain.OriginalOrder;
-
 import java.util.List;
+import com.zjngic.terminal.domain.OriginalOrder;
 
 /**
  * 原始订单Service接口
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 public interface IOriginalOrderService 
 {

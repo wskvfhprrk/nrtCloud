@@ -7,7 +7,7 @@ import com.zjngic.terminal.domain.OrderPayment;
  * 订单支付Service接口
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 public interface IOrderPaymentService 
 {

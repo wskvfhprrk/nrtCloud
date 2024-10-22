@@ -2,20 +2,21 @@ package com.zjngic.terminal.service.impl;
 
 import java.util.List;
 import com.zjngic.common.utils.DateUtils;
-import com.zjngic.terminal.domain.OriginalOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.zjngic.terminal.mapper.OriginalOrderMapper;
+import com.zjngic.terminal.domain.OriginalOrder;
 import com.zjngic.terminal.service.IOriginalOrderService;
 
 /**
  * 原始订单Service业务层处理
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 @Service
-public class OriginalOrderServiceImpl implements IOriginalOrderService {
+public class OriginalOrderServiceImpl implements IOriginalOrderService 
+{
     @Autowired
     private OriginalOrderMapper originalOrderMapper;
 

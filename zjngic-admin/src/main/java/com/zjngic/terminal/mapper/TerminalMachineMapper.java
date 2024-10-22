@@ -1,7 +1,7 @@
 package com.zjngic.terminal.mapper;
 
 import java.util.List;
-import com.zjngic.terminal .domain.TerminalMachine;
+import com.zjngic.terminal.domain.TerminalMachine;
 
 /**
  * 终端机器Mapper接口

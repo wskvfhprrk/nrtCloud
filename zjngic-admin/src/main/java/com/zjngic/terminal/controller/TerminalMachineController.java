@@ -17,8 +17,8 @@ import com.zjngic.common.annotation.Log;
 import com.zjngic.common.core.controller.BaseController;
 import com.zjngic.common.core.domain.AjaxResult;
 import com.zjngic.common.enums.BusinessType;
-import com.zjngic.terminal .domain.TerminalMachine;
-import com.zjngic.terminal .service.ITerminalMachineService;
+import com.zjngic.terminal.domain.TerminalMachine;
+import com.zjngic.terminal.service.ITerminalMachineService;
 import com.zjngic.common.utils.poi.ExcelUtil;
 import com.zjngic.common.core.page.TableDataInfo;
 

@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" size="small" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="订单ID" prop="orderId">
+      <el-form-item label="订单编号" prop="orderId">
         <el-input
           v-model="queryParams.orderId"
-          placeholder="请输入订单ID"
+          placeholder="请输入订单编号"
           clearable
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="机器编号" prop="machineCode">
+      <el-form-item label="支付订单号" prop="outTradeNo">
         <el-input
-          v-model="queryParams.machineCode"
-          placeholder="请输入机器编号"
+          v-model="queryParams.outTradeNo"
+          placeholder="请输入支付订单号"
           clearable
           @keyup.enter.native="handleQuery"
         />
@@ -26,14 +26,12 @@
         />
       </el-form-item>
       <el-form-item label="支付方式" prop="payMethod">
-        <el-select v-model="queryParams.payMethod" placeholder="请选择支付方式" clearable>
-          <el-option
-            v-for="dict in dict.type.pay_method"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
+        <el-input
+          v-model="queryParams.payMethod"
+          placeholder="请输入支付方式"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item label="是否退款" prop="isRefunded">
         <el-input
@@ -51,8 +49,8 @@
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="支付状态" prop="paymentStatus">
-        <el-select v-model="queryParams.paymentStatus" placeholder="请选择支付状态" clearable>
+      <el-form-item label="订单状态" prop="paymentStatus">
+        <el-select v-model="queryParams.paymentStatus" placeholder="请选择订单状态" clearable>
           <el-option
             v-for="dict in dict.type.order_status"
             :key="dict.value"
@@ -78,14 +76,12 @@
         </el-date-picker>
       </el-form-item>
       <el-form-item label="退款方式" prop="refundMethod">
-        <el-select v-model="queryParams.refundMethod" placeholder="请选择退款方式" clearable>
-          <el-option
-            v-for="dict in dict.type.refund_method"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
+        <el-input
+          v-model="queryParams.refundMethod"
+          placeholder="请输入退款方式"
+          clearable
+          @keyup.enter.native="handleQuery"
+        />
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -142,7 +138,8 @@
     <el-table v-loading="loading" :data="payList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="支付记录ID" align="center" prop="id" />
-      <el-table-column label="订单ID" align="center" prop="orderId" />
+      <el-table-column label="订单编号" align="center" prop="orderId" />
+      <el-table-column label="支付订单号" align="center" prop="outTradeNo" />
       <el-table-column label="机器编号" align="center" prop="machineCode" />
       <el-table-column label="支付金额" align="center" prop="payAmount" />
       <el-table-column label="支付方式" align="center" prop="payMethod">
@@ -152,7 +149,7 @@
       </el-table-column>
       <el-table-column label="是否退款" align="center" prop="isRefunded" />
       <el-table-column label="退款编号" align="center" prop="refundCode" />
-      <el-table-column label="支付状态" align="center" prop="paymentStatus">
+      <el-table-column label="订单状态" align="center" prop="paymentStatus">
         <template slot-scope="scope">
           <dict-tag :options="dict.type.order_status" :value="scope.row.paymentStatus"/>
         </template>
@@ -167,11 +164,7 @@
           <span>{{ parseTime(scope.row.refundTime, '{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="退款方式" align="center" prop="refundMethod">
-        <template slot-scope="scope">
-          <dict-tag :options="dict.type.refund_method" :value="scope.row.refundMethod"/>
-        </template>
-      </el-table-column>
+      <el-table-column label="退款方式" align="center" prop="refundMethod" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -203,24 +196,17 @@
     <!-- 添加或修改订单支付对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="订单ID" prop="orderId">
-          <el-input v-model="form.orderId" placeholder="请输入订单ID" />
+        <el-form-item label="订单编号" prop="orderId">
+          <el-input v-model="form.orderId" placeholder="请输入订单编号" />
         </el-form-item>
-        <el-form-item label="机器编号" prop="machineCode">
-          <el-input v-model="form.machineCode" placeholder="请输入机器编号" />
+        <el-form-item label="支付订单号" prop="outTradeNo">
+          <el-input v-model="form.outTradeNo" placeholder="请输入支付订单号" />
         </el-form-item>
         <el-form-item label="支付金额" prop="payAmount">
           <el-input v-model="form.payAmount" placeholder="请输入支付金额" />
         </el-form-item>
         <el-form-item label="支付方式" prop="payMethod">
-          <el-select v-model="form.payMethod" placeholder="请选择支付方式">
-            <el-option
-              v-for="dict in dict.type.pay_method"
-              :key="dict.value"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
-            ></el-option>
-          </el-select>
+          <el-input v-model="form.payMethod" placeholder="请输入支付方式" />
         </el-form-item>
         <el-form-item label="是否退款" prop="isRefunded">
           <el-input v-model="form.isRefunded" placeholder="请输入是否退款" />
@@ -228,7 +214,7 @@
         <el-form-item label="退款编号" prop="refundCode">
           <el-input v-model="form.refundCode" placeholder="请输入退款编号" />
         </el-form-item>
-        <el-form-item label="支付状态" prop="paymentStatus">
+        <el-form-item label="订单状态" prop="paymentStatus">
           <el-radio-group v-model="form.paymentStatus">
             <el-radio
               v-for="dict in dict.type.order_status"
@@ -254,14 +240,7 @@
           </el-date-picker>
         </el-form-item>
         <el-form-item label="退款方式" prop="refundMethod">
-          <el-select v-model="form.refundMethod" placeholder="请选择退款方式">
-            <el-option
-              v-for="dict in dict.type.refund_method"
-              :key="dict.value"
-              :label="dict.label"
-              :value="parseInt(dict.value)"
-            ></el-option>
-          </el-select>
+          <el-input v-model="form.refundMethod" placeholder="请输入退款方式" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -277,7 +256,7 @@ import { listPay, getPay, delPay, addPay, updatePay } from "@/api/terminal/pay";
 
 export default {
   name: "Pay",
-  dicts: ['order_status', 'pay_method', 'refund_method'],
+  dicts: ['order_status'],
   data() {
     return {
       // 遮罩层
@@ -303,6 +282,7 @@ export default {
         pageNum: 1,
         pageSize: 10,
         orderId: null,
+        outTradeNo: null,
         machineCode: null,
         payAmount: null,
         payMethod: null,
@@ -318,19 +298,22 @@ export default {
       // 表单校验
       rules: {
         orderId: [
-          { required: true, message: "订单ID不能为空", trigger: "blur" }
+          { required: true, message: "订单编号不能为空", trigger: "blur" }
+        ],
+        outTradeNo: [
+          { required: true, message: "支付订单号不能为空", trigger: "blur" }
         ],
         machineCode: [
-          { required: true, message: "机器编号不能为空", trigger: "blur" }
+          { required: true, message: "机器编号不能为空", trigger: "change" }
         ],
         payAmount: [
           { required: true, message: "支付金额不能为空", trigger: "blur" }
         ],
         payMethod: [
-          { required: true, message: "支付方式不能为空", trigger: "change" }
+          { required: true, message: "支付方式不能为空", trigger: "blur" }
         ],
         paymentStatus: [
-          { required: true, message: "支付状态不能为空", trigger: "change" }
+          { required: true, message: "订单状态不能为空", trigger: "change" }
         ],
       }
     };
@@ -358,6 +341,7 @@ export default {
       this.form = {
         id: null,
         orderId: null,
+        outTradeNo: null,
         machineCode: null,
         payAmount: null,
         payMethod: null,

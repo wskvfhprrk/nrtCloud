@@ -12,7 +12,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * 订单支付对象 order_payment
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 public class OrderPayment extends BaseEntity
 {
@@ -21,9 +21,13 @@ public class OrderPayment extends BaseEntity
     /** 支付记录ID */
     private Long id;
 
-    /** 订单ID */
-    @Excel(name = "订单ID")
+    /** 订单编号 */
+    @Excel(name = "订单编号")
     private String orderId;
+
+    /** 支付订单号 */
+    @Excel(name = "支付订单号")
+    private String outTradeNo;
 
     /** 机器编号 */
     @Excel(name = "机器编号")
@@ -45,8 +49,8 @@ public class OrderPayment extends BaseEntity
     @Excel(name = "退款编号")
     private String refundCode;
 
-    /** 支付状态 */
-    @Excel(name = "支付状态")
+    /** 订单状态 */
+    @Excel(name = "订单状态")
     private Integer paymentStatus;
 
     /** 支付时间 */
@@ -61,7 +65,7 @@ public class OrderPayment extends BaseEntity
 
     /** 退款方式 */
     @Excel(name = "退款方式")
-    private Integer refundMethod;
+    private String refundMethod;
 
     public void setId(Long id) 
     {
@@ -72,14 +76,23 @@ public class OrderPayment extends BaseEntity
     {
         return id;
     }
-    public void setOrderId(String orderId)
+    public void setOrderId(String orderId) 
     {
         this.orderId = orderId;
     }
 
-    public String getOrderId()
+    public String getOrderId() 
     {
         return orderId;
+    }
+    public void setOutTradeNo(String outTradeNo) 
+    {
+        this.outTradeNo = outTradeNo;
+    }
+
+    public String getOutTradeNo() 
+    {
+        return outTradeNo;
     }
     public void setMachineCode(String machineCode) 
     {
@@ -153,12 +166,12 @@ public class OrderPayment extends BaseEntity
     {
         return refundTime;
     }
-    public void setRefundMethod(Integer refundMethod) 
+    public void setRefundMethod(String refundMethod) 
     {
         this.refundMethod = refundMethod;
     }
 
-    public Integer getRefundMethod() 
+    public String getRefundMethod() 
     {
         return refundMethod;
     }
@@ -168,6 +181,7 @@ public class OrderPayment extends BaseEntity
         return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
             .append("orderId", getOrderId())
+            .append("outTradeNo", getOutTradeNo())
             .append("machineCode", getMachineCode())
             .append("payAmount", getPayAmount())
             .append("payMethod", getPayMethod())

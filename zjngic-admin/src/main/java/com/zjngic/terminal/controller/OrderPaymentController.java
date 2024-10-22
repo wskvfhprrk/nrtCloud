@@ -25,7 +25,7 @@ import com.zjngic.common.core.page.TableDataInfo;
  * 订单支付Controller
  * 
  * @author zjngic
- * @date 2024-10-14
+ * @date 2024-10-22
  */
 @RestController
 @RequestMapping("/terminal/pay")
@@ -37,7 +37,7 @@ public class OrderPaymentController extends BaseController
     /**
      * 查询订单支付列表
      */
-    @PreAuthorize("@ss.hasPermi('terminal:pay:list')")
+    @PreAuthorize("@ss.hasPermi('terminal :pay:list')")
     @GetMapping("/list")
     public TableDataInfo list(OrderPayment orderPayment)
     {
@@ -46,11 +46,10 @@ public class OrderPaymentController extends BaseController
         return getDataTable(list);
     }
 
-
     /**
      * 导出订单支付列表
      */
-    @PreAuthorize("@ss.hasPermi('terminal:pay:export')")
+    @PreAuthorize("@ss.hasPermi('terminal :pay:export')")
     @Log(title = "订单支付", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
     public void export(HttpServletResponse response, OrderPayment orderPayment)
@@ -63,7 +62,7 @@ public class OrderPaymentController extends BaseController
     /**
      * 获取订单支付详细信息
      */
-    @PreAuthorize("@ss.hasPermi('terminal:pay:query')")
+    @PreAuthorize("@ss.hasPermi('terminal :pay:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -73,7 +72,7 @@ public class OrderPaymentController extends BaseController
     /**
      * 新增订单支付
      */
-    @PreAuthorize("@ss.hasPermi('terminal:pay:add')")
+    @PreAuthorize("@ss.hasPermi('terminal :pay:add')")
     @Log(title = "订单支付", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody OrderPayment orderPayment)
@@ -84,7 +83,7 @@ public class OrderPaymentController extends BaseController
     /**
      * 修改订单支付
      */
-    @PreAuthorize("@ss.hasPermi('terminal:pay:edit')")
+    @PreAuthorize("@ss.hasPermi('terminal :pay:edit')")
     @Log(title = "订单支付", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody OrderPayment orderPayment)
@@ -95,7 +94,7 @@ public class OrderPaymentController extends BaseController
     /**
      * 删除订单支付
      */
-    @PreAuthorize("@ss.hasPermi('terminal:pay:remove')")
+    @PreAuthorize("@ss.hasPermi('terminal :pay:remove')")
     @Log(title = "订单支付", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
