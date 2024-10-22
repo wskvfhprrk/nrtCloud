@@ -6,14 +6,19 @@ import com.hejz.pay.wx.service.PaySuccessService;
 import com.hejz.pay.wx.service.RefundSuccessService;
 import com.hejz.util.service.SignService;
 import com.zjngic.common.constant.Constants;
+import com.zjngic.terminal.domain.OrderPayment;
+import com.zjngic.terminal.domain.OriginalOrder;
 import com.zjngic.terminal.domain.TerminalMachine;
 import com.zjngic.terminal.service.IOriginalOrderService;
 import com.zjngic.terminal.service.impl.OrderPaymentServiceImpl;
 import com.zjngic.vo.OrderPayMessage;
+import com.zjngic.vo.OrderStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 退款成功——服务端代码
@@ -66,8 +71,25 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
             String s = JSON.toJSONString(signService.signByData(String.valueOf(o), terminalMachine.getGeneratedKey()));
             mqttProviderConfig.publish(0, false, "message/paySuccess/" + terminalMachine.getCode(), s);
             //更新原始订单状态
-
+            OriginalOrder order=new OriginalOrder();
+            order.setOutTradeNo(outTradeNo);
+            List<OriginalOrder> originalOrders = originalOrderService.selectOriginalOrderList(order);
+            if(!originalOrders.isEmpty()){
+                for (OriginalOrder originalOrder : originalOrders) {
+                    originalOrder.setOrderStatus(OrderStatus.PAID.ordinal());
+                    originalOrderService.updateOriginalOrder(originalOrder);
+                }
+            }
             //更新支付计单状态
+            OrderPayment orderPayment=new OrderPayment();
+            orderPayment.setOutTradeNo(outTradeNo);
+            List<OrderPayment> orderPayments = orderPaymentService.selectOrderPaymentList(orderPayment);
+            if(!orderPayments.isEmpty()){
+                for (OrderPayment payment : orderPayments) {
+                    payment.setPaymentStatus(OrderStatus.PAID.ordinal());
+                    orderPaymentService.updateOrderPayment(payment);
+                }
+            }
             redisTemplate.delete(Constants.ORIGINAL_ORDER_ID + "::" + outTradeNo);
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,6 +99,26 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
     @Override
     public void refundSuccess(String outTradeNo) {
         log.warn("退款成功，退款订单号：{}", outTradeNo);
+        //更新原始订单状态
+        OriginalOrder order=new OriginalOrder();
+        order.setOutTradeNo(outTradeNo);
+        List<OriginalOrder> originalOrders = originalOrderService.selectOriginalOrderList(order);
+        if(!originalOrders.isEmpty()){
+            for (OriginalOrder originalOrder : originalOrders) {
+                originalOrder.setOrderStatus(OrderStatus.REFUNDED.ordinal());
+                originalOrderService.updateOriginalOrder(originalOrder);
+            }
+        }
+        //更新支付计单状态
+        OrderPayment orderPayment=new OrderPayment();
+        orderPayment.setOutTradeNo(outTradeNo);
+        List<OrderPayment> orderPayments = orderPaymentService.selectOrderPaymentList(orderPayment);
+        if(!orderPayments.isEmpty()){
+            for (OrderPayment payment : orderPayments) {
+                payment.setPaymentStatus(OrderStatus.REFUNDED.ordinal());
+                orderPaymentService.updateOrderPayment(payment);
+            }
+        }
     }
     //获取订单
 }
