@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,6 +88,7 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
             if(!orderPayments.isEmpty()){
                 for (OrderPayment payment : orderPayments) {
                     payment.setPaymentStatus(OrderStatus.PAID.ordinal());
+                    payment.setPayTime(new Date());
                     orderPaymentService.updateOrderPayment(payment);
                 }
             }
@@ -116,9 +118,11 @@ public class PaySucessServiceImpl implements PaySuccessService, RefundSuccessSer
         if(!orderPayments.isEmpty()){
             for (OrderPayment payment : orderPayments) {
                 payment.setPaymentStatus(OrderStatus.REFUNDED.ordinal());
+                payment.setRefundCode(outTradeNo);
+                payment.setRefundTime(new Date());
+//                payment.setRefundMethod();
                 orderPaymentService.updateOrderPayment(payment);
             }
         }
     }
-    //获取订单
 }
