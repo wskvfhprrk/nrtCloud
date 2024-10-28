@@ -54,13 +54,13 @@ public class OrderPayment extends BaseEntity
     private Integer paymentStatus;
 
     /** 支付时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "支付时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "支付时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date payTime;
 
     /** 退款时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "退款时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "退款时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date refundTime;
 
     /** 退款方式 */

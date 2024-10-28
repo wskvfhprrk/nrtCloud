@@ -63,7 +63,7 @@
         <el-date-picker clearable
           v-model="queryParams.payTime"
           type="date"
-          value-format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd HH:mm:ss"
           placeholder="请选择支付时间">
         </el-date-picker>
       </el-form-item>
@@ -71,7 +71,7 @@
         <el-date-picker clearable
           v-model="queryParams.refundTime"
           type="date"
-          value-format="yyyy-MM-dd"
+          value-format="yyyy-MM-dd HH:mm:ss"
           placeholder="请选择退款时间">
         </el-date-picker>
       </el-form-item>
@@ -156,12 +156,12 @@
       </el-table-column>
       <el-table-column label="支付时间" align="center" prop="payTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.payTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.payTime, '{y}-{m}-{d}') }} {{parseTime(scope.row.payTime, '{h}:{m}:{s}')}}</span>
         </template>
       </el-table-column>
       <el-table-column label="退款时间" align="center" prop="refundTime" width="180">
         <template slot-scope="scope">
-          <span>{{ parseTime(scope.row.refundTime, '{y}-{m}-{d}') }}</span>
+          <span>{{ parseTime(scope.row.refundTime, '{y}-{m}-{d}') }} {{parseTime(scope.row.refundTime, '{h}:{m}:{s}')}}</span>
         </template>
       </el-table-column>
       <el-table-column label="退款方式" align="center" prop="refundMethod" />
@@ -184,7 +184,7 @@
         </template>
       </el-table-column>
     </el-table>
-    
+
     <pagination
       v-show="total>0"
       :total="total"

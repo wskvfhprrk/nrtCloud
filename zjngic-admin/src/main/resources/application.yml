@@ -48,6 +48,8 @@ user:
 
 # Spring配置
 spring:
+  jackson:
+    time-zone: Asia/Shanghai
   # 资源信息
   messages:
     # 国际化资源文件路径
