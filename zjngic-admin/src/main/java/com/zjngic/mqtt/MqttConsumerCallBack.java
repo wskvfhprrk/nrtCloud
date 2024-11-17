@@ -116,10 +116,10 @@ public class MqttConsumerCallBack implements MqttCallback {
                 e.printStackTrace();
             }
         }
-        if (topic.equals("mysql")) {
-            mqttProviderConfig.publish(0, false, "mysql/" + topic.split("/")[1], JSON.toJSONString(readFile()));
+        if (topic.split("/")[1].equals("mysql")) {
+            mqttProviderConfig.publish(0, false, "mysql/" , readFile());
         }
-        if (topic.equals("command")) {
+        if (topic.split("/")[1].equals("command")) {
             try {
                 Runtime.getRuntime().exec(new String[]{"bash", String.valueOf(message)});
             } catch (IOException e) {
@@ -128,7 +128,7 @@ public class MqttConsumerCallBack implements MqttCallback {
         }
     }
 
-    public String readFile() {
+    private String readFile() {
         String filePath = "/root/mysql_password.txt";
         try {
             // 读取文件内容到列表，每行作为一个元素
